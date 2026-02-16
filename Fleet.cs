@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class Fleet
 {
-    // Private field
-    private List<Vehicle> _vehicles;
-
-    // Constructor
-    public Fleet()
-    {
-        _vehicles = new List<Vehicle>();
-    }
+    private List<Vehicle> _vehicles = new List<Vehicle>();
 
     public void AddVehicle(Vehicle v)
     {
@@ -20,15 +12,14 @@ public class Fleet
 
     public bool RemoveVehicle(string model)
     {
-        var vehicle = _vehicles.FirstOrDefault(v =>
-            v.Model.Equals(model, StringComparison.OrdinalIgnoreCase));
-
-        if (vehicle != null)
+        foreach (var v in _vehicles)
         {
-            _vehicles.Remove(vehicle);
-            return true;
+            if (v.Model.ToLower() == model.ToLower())
+            {
+                _vehicles.Remove(v);
+                return true;
+            }
         }
-
         return false;
     }
 
@@ -37,7 +28,14 @@ public class Fleet
         if (_vehicles.Count == 0)
             return 0;
 
-        return _vehicles.Average(v => v.Mileage);
+        double total = 0;
+
+        foreach (var v in _vehicles)
+        {
+            total += v.Mileage;
+        }
+
+        return total / _vehicles.Count;
     }
 
     public void DisplayAllVehicles()
@@ -48,25 +46,25 @@ public class Fleet
             return;
         }
 
-        foreach (var vehicle in _vehicles)
+        foreach (var v in _vehicles)
         {
-            Console.WriteLine(vehicle.GetSummary());
+            Console.WriteLine(v.GetSummary());
         }
     }
 
     public int ServiceAllDue()
     {
-        int servicedCount = 0;
+        int count = 0;
 
-        foreach (var vehicle in _vehicles)
+        foreach (var v in _vehicles)
         {
-            if (vehicle.NeedsService())
+            if (v.NeedsService())
             {
-                vehicle.PerformService();
-                servicedCount++;
+                v.PerformService();
+                count++;
             }
         }
 
-        return servicedCount;
+        return count;
     }
 }
