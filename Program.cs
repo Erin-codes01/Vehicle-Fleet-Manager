@@ -17,7 +17,7 @@ class Program
             Console.WriteLine("4. Show The Average Mileage");
             Console.WriteLine("5. Service Due On A Vehicles");
             Console.WriteLine("6. Exit");
-            Console.Write("Choose: ");
+            Console.Write("Choose a number: ");
 
             string choice = Console.ReadLine();
 
